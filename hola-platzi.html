@@ -4,10 +4,34 @@
 	</p>
 </template>
 
+
 <script>
-	(function(window, document){
-		var documentoImportador = document,
-		documentoAImportar = (documentoImportador._currentScript || documentoImportador.currentScript).ownerDocument,
+   (function(window, document){
 		
-	})
+		var documentoImportador = document,
+			documentoAImportar = (documentoImportador._currentScript || documentoImportador.currentScript).ownerDocument,
+			template = documentoAImportar.querySelector('template').content,
+			prototipoDeMiElemento = Object.create(HTMLElement.prototype);
+
+		prototipoDeMiElemento.who = 'Platzi';	
+
+		prototipoDeMiElemento.createdCallback = function(){
+			clone = documentoImportador.importNode(template, true);
+			shadowRoot.appendChild(clone);
+			this.strong = shadowRoot.querySelector('strong');
+
+			if(this.hasAttribute('who')){
+				var who = this.getAttribute('who');
+				this.setWho(this.who);
+			}else{
+				this.setWho(this.who);
+			}
+		};
+
+		prototipoDeMiElemento.setWho = function(value){
+			this.who = value;
+			this.strong.textContent = this.who;
+		}
+
+   })();
 </script>
